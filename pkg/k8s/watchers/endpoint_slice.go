@@ -14,6 +14,7 @@ import (
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/cache"
 
+	ipcacheTypes "github.com/cilium/cilium/pkg/ipcache/types"
 	"github.com/cilium/cilium/pkg/k8s"
 	"github.com/cilium/cilium/pkg/k8s/informer"
 	slim_discover_v1 "github.com/cilium/cilium/pkg/k8s/slim/k8s/api/discovery/v1"
@@ -188,7 +189,9 @@ func (k *K8sWatcher) addKubeAPIServerServiceEPSliceV1(eps *slim_discover_v1.Endp
 		}
 	}
 
-	k.handleKubeAPIServerServiceEPChanges(desiredIPs)
+	// TODO: Double-check that this is the short name for this resource
+	name := ipcacheTypes.NewRenameMe("epslice", eps.ObjectMeta.GetNamespace(), eps.ObjectMeta.GetName())
+	k.handleKubeAPIServerServiceEPChanges(desiredIPs, name)
 }
 
 func (k *K8sWatcher) addKubeAPIServerServiceEPSliceV1Beta1(eps *slim_discover_v1beta1.EndpointSlice) {
@@ -205,7 +208,9 @@ func (k *K8sWatcher) addKubeAPIServerServiceEPSliceV1Beta1(eps *slim_discover_v1
 		}
 	}
 
-	k.handleKubeAPIServerServiceEPChanges(desiredIPs)
+	// TODO: Double-check that this is the short name for this resource
+	name := ipcacheTypes.NewRenameMe("epslice", eps.ObjectMeta.GetNamespace(), eps.ObjectMeta.GetName())
+	k.handleKubeAPIServerServiceEPChanges(desiredIPs, name)
 }
 
 // initEndpointsOrSlices initializes either the "Endpoints" or "EndpointSlice"
