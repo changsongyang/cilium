@@ -190,7 +190,7 @@ func (k *K8sWatcher) addKubeAPIServerServiceEPSliceV1(eps *slim_discover_v1.Endp
 	}
 
 	// TODO: Double-check that this is the short name for this resource
-	name := ipcacheTypes.NewRenameMe("epslice", eps.ObjectMeta.GetNamespace(), eps.ObjectMeta.GetName())
+	name := ipcacheTypes.NewResourceID("epslice", eps.ObjectMeta.GetNamespace(), eps.ObjectMeta.GetName())
 	k.handleKubeAPIServerServiceEPChanges(desiredIPs, name)
 }
 
@@ -209,7 +209,7 @@ func (k *K8sWatcher) addKubeAPIServerServiceEPSliceV1Beta1(eps *slim_discover_v1
 	}
 
 	// TODO: Double-check that this is the short name for this resource
-	name := ipcacheTypes.NewRenameMe("epslice", eps.ObjectMeta.GetNamespace(), eps.ObjectMeta.GetName())
+	name := ipcacheTypes.NewResourceID("epslice", eps.ObjectMeta.GetNamespace(), eps.ObjectMeta.GetName())
 	k.handleKubeAPIServerServiceEPChanges(desiredIPs, name)
 }
 

@@ -106,7 +106,7 @@ func (k *K8sWatcher) deleteK8sEndpointV1(ep *slim_corev1.Endpoints, swg *lock.St
 //
 // The actual implementation of this logic down to the datapath is handled
 // asynchronously.
-func (k *K8sWatcher) handleKubeAPIServerServiceEPChanges(desiredIPs map[string]struct{}, name ipcacheTypes.RenameMe) {
+func (k *K8sWatcher) handleKubeAPIServerServiceEPChanges(desiredIPs map[string]struct{}, name ipcacheTypes.ResourceID) {
 	// Use CustomResource as the source similar to the way the CiliumNode
 	// (pkg/node/manager.Manager) handler does because the ipcache entry needs
 	// to be overwrite-able by this handler and the CiliumNode handler. If we
@@ -160,6 +160,6 @@ func (k *K8sWatcher) addKubeAPIServerServiceEPs(ep *slim_corev1.Endpoints) {
 	}
 
 	// TODO: Double-check that this is the short name for this resource
-	name := ipcacheTypes.NewRenameMe("eps", ep.ObjectMeta.GetNamespace(), ep.ObjectMeta.GetName())
+	name := ipcacheTypes.NewResourceID("eps", ep.ObjectMeta.GetNamespace(), ep.ObjectMeta.GetName())
 	k.handleKubeAPIServerServiceEPChanges(desiredIPs, name)
 }

@@ -53,7 +53,7 @@ type IPCache interface {
 	Upsert(ip string, hostIP net.IP, hostKey uint8, k8sMeta *ipcache.K8sMetadata, newIdentity ipcache.Identity) (bool, error)
 	Delete(IP string, source source.Source) bool
 	TriggerLabelInjection()
-	UpsertMetadata(prefix string, lbls labels.Labels, src source.Source, name ipcacheTypes.RenameMe)
+	UpsertMetadata(prefix string, lbls labels.Labels, src source.Source, name ipcacheTypes.ResourceID)
 }
 
 // Configuration is the set of configuration options the node manager depends
@@ -445,7 +445,7 @@ func (m *Manager) NodeUpdated(n nodeTypes.Node) {
 			Source: n.Source,
 		})
 
-		name := ipcacheTypes.NewRenameMe("node", "", n.Name)
+		name := ipcacheTypes.NewResourceID("node", "", n.Name)
 		m.upsertIntoIDMD(ipAddrStr, remoteHostIdentity, name)
 
 		// Upsert() will return true if the ipcache entry is owned by
@@ -534,7 +534,7 @@ func (m *Manager) NodeUpdated(n nodeTypes.Node) {
 // upsertIntoIDMD upserts the given CIDR into the ipcache.identityMetadata
 // (IDMD) map. The given node identity determines which labels are associated
 // with the CIDR.
-func (m *Manager) upsertIntoIDMD(prefix string, id identity.NumericIdentity, name ipcacheTypes.RenameMe) {
+func (m *Manager) upsertIntoIDMD(prefix string, id identity.NumericIdentity, name ipcacheTypes.ResourceID) {
 	if id == identity.ReservedIdentityHost {
 		m.ipcache.UpsertMetadata(prefix, labels.LabelHost, source.Local, name)
 	} else {

@@ -82,11 +82,11 @@ func newMetadata() *metadata {
 // is its reference saved, as they're copied when inserting into the map.
 // 'src' and 'name', typically something like source.CustomResource and
 // 'resourceKind/namespace/name' help to identify the source of the information.
-func (ipc *IPCache) UpsertMetadata(prefix string, lbls labels.Labels, src source.Source, name types.RenameMe) {
+func (ipc *IPCache) UpsertMetadata(prefix string, lbls labels.Labels, src source.Source, name types.ResourceID) {
 	ipc.metadata.upsert(prefix, lbls, src, name)
 }
 
-func (m *metadata) upsert(prefix string, lbls labels.Labels, src source.Source, name types.RenameMe) {
+func (m *metadata) upsert(prefix string, lbls labels.Labels, src source.Source, name types.ResourceID) {
 	l := labels.NewLabelsFromModel(nil)
 	l.MergeLabels(lbls)
 
@@ -334,7 +334,7 @@ func (ipc *IPCache) RemoveLabelsExcluded(
 	lbls labels.Labels,
 	toExclude map[string]struct{},
 	src source.Source,
-	name types.RenameMe,
+	name types.ResourceID,
 ) {
 	ipc.metadata.applyChangesMU.Lock()
 	defer ipc.metadata.applyChangesMU.Unlock()
@@ -381,7 +381,7 @@ func (m *metadata) filterByLabels(filter labels.Labels) []string {
 func (ipc *IPCache) removeLabelsFromIPs(
 	m map[string]labels.Labels,
 	src source.Source,
-	name types.RenameMe,
+	name types.ResourceID,
 ) {
 	var (
 		idsToAdd    = make(map[identity.NumericIdentity]labels.LabelArray)
@@ -477,7 +477,7 @@ func (ipc *IPCache) removeLabelsFromIPs(
 //
 // This function assumes that the ipcache metadata and the IPIdentityCache
 // locks are taken!
-func (ipc *IPCache) removeLabels(prefix string, lbls labels.Labels, src source.Source, name types.RenameMe) labels.Labels {
+func (ipc *IPCache) removeLabels(prefix string, lbls labels.Labels, src source.Source, name types.ResourceID) labels.Labels {
 	info, ok := ipc.metadata.m[prefix]
 	if !ok {
 		return nil

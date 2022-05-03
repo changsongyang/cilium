@@ -29,7 +29,7 @@ func TestInjectLabels(t *testing.T) {
 
 	// Insert kube-apiserver IP from outside of the cluster. This should create
 	// a CIDR ID for this IP.
-	IPIdentityCache.UpsertMetadata("10.0.0.4", labels.LabelKubeAPIServer, source.KubeAPIServer, testRenameMe("kube-uid")
+	IPIdentityCache.UpsertMetadata("10.0.0.4", labels.LabelKubeAPIServer, source.KubeAPIServer, testResourceID("kube-uid")
 	assert.Len(t, IPIdentityCache.metadata.m, 2)
 	assert.NoError(t, IPIdentityCache.InjectLabels())
 	assert.Len(t, IPIdentityCache.ipToIdentityCache, 2)

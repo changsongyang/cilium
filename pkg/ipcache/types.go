@@ -25,7 +25,7 @@ func newLabelsWithSource(l labels.Labels, src source.Source) labelsWithSource {
 // independently based on the UID of the origin of that information, and
 // provides convenient accessors to consistently merge the stored information
 // to generate ipcache output based on a range of inputs.
-type prefixInfo map[types.RenameMe]labelsWithSource
+type prefixInfo map[types.ResourceID]labelsWithSource
 
 // TODO: Make sure no locking is OK
 func (s prefixInfo) ToLabels() labels.Labels {
